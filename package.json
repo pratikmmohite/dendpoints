@@ -1,7 +1,7 @@
 {
   "name": "dendpoint",
   "displayName": "DEndpoint",
-  "repository": "",
+  "repository": "https://github.com/pratikmmohite/dendpoints.git",
   "description": "Discover API endpoints in ASP.NET Core C# projects",
   "version": "0.2.0",
   "publisher": "dendpoint",
