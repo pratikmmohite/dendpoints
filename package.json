@@ -1,0 +1,108 @@
+{
+  "name": "dendpoint",
+  "displayName": "DEndpoint",
+  "repository": "",
+  "description": "Discover API endpoints in ASP.NET Core C# projects",
+  "version": "0.2.0",
+  "publisher": "dendpoint",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.csproj"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "DEndpoint",
+      "properties": {
+        "dendpoint.useRoslynAnalyzer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use the bundled .NET Roslyn analyzer for endpoint discovery. Requires the .NET SDK/runtime on PATH. Falls back to regex scanning when disabled or unavailable."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dendpoint",
+          "title": "Endpoint Explorer",
+          "icon": "resources/endpoint-explorer.svg"
+        }
+      ]
+    },
+    "views": {
+      "dendpoint": [
+        {
+          "id": "dendpoint.apiCalls",
+          "name": "Endpoints",
+          "icon": "$(globe)",
+          "contextualTitle": "Endpoint Explorer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "dendpoint.refresh",
+        "title": "Refresh Endpoints",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "dendpoint.openApiCall",
+        "title": "Open Endpoint"
+      },
+      {
+        "command": "dendpoint.showExplorer",
+        "title": "Endpoint Explorer: Show",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "dendpoint.search",
+        "title": "Search Endpoints",
+        "icon": "$(search)"
+      },
+      {
+        "command": "dendpoint.clearSearch",
+        "title": "Clear Search",
+        "icon": "$(close)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "dendpoint.search",
+          "when": "view == dendpoint.apiCalls",
+          "group": "navigation"
+        },
+        {
+          "command": "dendpoint.clearSearch",
+          "when": "view == dendpoint.apiCalls && dendpoint.filterActive",
+          "group": "navigation"
+        },
+        {
+          "command": "dendpoint.refresh",
+          "when": "view == dendpoint.apiCalls",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build:analyzer": "dotnet publish analyzer/DEndpoint.Analyzer.csproj -c Release -o analyzer/publish",
+    "build": "npm run build:analyzer && npm run compile",
+    "package": "npm run build && npx vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "typescript": "^5.3.3"
+  }
+}

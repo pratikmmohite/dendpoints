@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# TypeScript / VS Code extension build
+out/
+*.vsix
+
+# VS Code extension test runner
+.vscode-test/
+
+# .NET build outputs
+**/bin/
+**/obj/
+analyzer/publish/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE (user-specific)
+.idea/
+*.swp
+*.swo
+*~
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+node_modules/*
+
