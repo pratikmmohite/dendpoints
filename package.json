@@ -13,7 +13,8 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.csproj"
+    "workspaceContains:**/*.csproj",
+    "onView:dendpoint.apiCalls"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -41,6 +42,7 @@
         {
           "id": "dendpoint.apiCalls",
           "name": "Endpoints",
+          "type": "webview",
           "icon": "$(globe)",
           "contextualTitle": "Endpoint Explorer"
         }
@@ -53,32 +55,18 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "dendpoint.openApiCall",
-        "title": "Open Endpoint"
-      },
-      {
         "command": "dendpoint.showExplorer",
         "title": "Endpoint Explorer: Show",
         "icon": "$(globe)"
       },
       {
-        "command": "dendpoint.search",
-        "title": "Search Endpoints",
-        "icon": "$(search)"
-      },
-      {
         "command": "dendpoint.clearSearch",
-        "title": "Clear Search",
+        "title": "Clear Filter",
         "icon": "$(close)"
       }
     ],
     "menus": {
       "view/title": [
-        {
-          "command": "dendpoint.search",
-          "when": "view == dendpoint.apiCalls",
-          "group": "navigation"
-        },
         {
           "command": "dendpoint.clearSearch",
           "when": "view == dendpoint.apiCalls && dendpoint.filterActive",

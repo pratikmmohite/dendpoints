@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { ApiCallsTreeProvider, openApiCall } from "./apiTreeProvider";
+import { EndpointPanelProvider } from "./endpointPanelProvider";
 
-let treeProvider: ApiCallsTreeProvider | undefined;
+let panelProvider: EndpointPanelProvider | undefined;
 
 function getWorkspaceFolder(): vscode.WorkspaceFolder | undefined {
   const folders = vscode.workspace.workspaceFolders;
@@ -30,62 +30,42 @@ export function activate(context: vscode.ExtensionContext): void {
       .get<boolean>("useRoslynAnalyzer", true),
   });
 
-  treeProvider = new ApiCallsTreeProvider(getWorkspaceFolder, getScanOptions);
-
-  const treeView = vscode.window.createTreeView("dendpoint.apiCalls", {
-    treeDataProvider: treeProvider,
-    showCollapseAll: true,
-  });
+  panelProvider = new EndpointPanelProvider(
+    context.extensionUri,
+    getWorkspaceFolder,
+    getScanOptions,
+  );
 
   context.subscriptions.push(
-    treeView,
+    vscode.window.registerWebviewViewProvider(
+      EndpointPanelProvider.viewType,
+      panelProvider,
+    ),
     vscode.commands.registerCommand("dendpoint.refresh", () => {
-      treeProvider?.refresh();
-    }),
-    vscode.commands.registerCommand("dendpoint.search", async () => {
-      if (!treeProvider) {
-        return;
-      }
-
-      const query = await vscode.window.showInputBox({
-        placeHolder: "Filter by path, method, or file...",
-        prompt: "Search API endpoints",
-        value: treeProvider.filterQuery,
-      });
-
-      if (query === undefined) {
-        return;
-      }
-
-      treeProvider.setSearchQuery(query);
+      void panelProvider?.refresh();
     }),
     vscode.commands.registerCommand("dendpoint.clearSearch", () => {
-      treeProvider?.clearSearch();
-    }),
-    vscode.commands.registerCommand("dendpoint.openApiCall", (apiCall) => {
-      void openApiCall(apiCall);
+      panelProvider?.clearSearch();
     }),
     vscode.commands.registerCommand("dendpoint.showExplorer", () => {
       void vscode.commands.executeCommand("workbench.view.extension.dendpoint");
     }),
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
-      treeProvider?.refresh();
+      void panelProvider?.refresh();
     }),
     vscode.workspace.onDidSaveTextDocument((document) => {
       if (document.uri.fsPath.endsWith(".cs")) {
-        treeProvider?.refresh();
+        void panelProvider?.refresh();
       }
     }),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("dendpoint.useRoslynAnalyzer")) {
-        treeProvider?.refresh();
+        void panelProvider?.refresh();
       }
     }),
   );
-
-  void treeProvider.loadApiCalls();
 }
 
 export function deactivate(): void {
-  treeProvider = undefined;
+  panelProvider = undefined;
 }
