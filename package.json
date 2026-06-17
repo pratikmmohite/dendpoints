@@ -3,9 +3,14 @@
   "displayName": "DEndpoint",
   "repository": "https://github.com/pratikmmohite/dendpoints.git",
   "description": "Discover API endpoints in ASP.NET Core C# projects",
-  "version": "0.2.0",
-  "publisher": "dendpoint",
+  "version": "0.1.0",
+  "publisher": "dev-pratikm",
   "license": "MIT",
+  "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#007ACC",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },

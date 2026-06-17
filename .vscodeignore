@@ -13,3 +13,4 @@ tsconfig.json
 **/*.map
 .git/**
 **/.DS_Store
+resources/icon.svg
